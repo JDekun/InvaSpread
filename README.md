@@ -1,4 +1,4 @@
-[![Open In Github](https://badgen.net/badge/icon/Open%20InstDisc?icon=github&label)](https://github.com/JDekun/InstDisc)
+[![Open In Github](https://badgen.net/badge/icon/Open%20InvaSpread?icon=github&label)](https://github.com/JDekun/InvaSpread)
 
 # Unsupervised_Embedding_Learning
 
