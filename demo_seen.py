@@ -109,16 +109,16 @@ if dataset =='cifar':
         batch_size=100, shuffle=False, num_workers=4)
 elif dataset == 'stl':
     # stl-10 dataset 
-    trainset = datasets.STL10Instance(root='../../input', split='train+unlabeled', download=True, transform=transform_train)
+    trainset = datasets.STL10Instance(root='../../input/stl10-binary', split='train+unlabeled', download=True, transform=transform_train)
     trainloader = torch.utils.data.DataLoader(trainset, 
         batch_size=args.batch_size, shuffle=True, num_workers=4,drop_last =True)
 
-    valset = datasets.STL10Instance(root='../../input', split='train', download=True, transform=transform_test)
+    valset = datasets.STL10Instance(root='../../input/stl10-binary', split='train', download=True, transform=transform_test)
     valloader = torch.utils.data.DataLoader(valset, 
         batch_size=100, shuffle=False, num_workers=4,drop_last =True)
     
     nvdata = valset.__len__()
-    testset = datasets.STL10Instance(root='../../input', split='test', download=True, transform=transform_test)
+    testset = datasets.STL10Instance(root='../../input/stl10-binary', split='test', download=True, transform=transform_test)
     testloader = torch.utils.data.DataLoader(testset, 
         batch_size=100, shuffle=False, num_workers=4)
 
