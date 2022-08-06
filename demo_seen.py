@@ -45,6 +45,7 @@ parser.add_argument('--batch-size', default=128, type=int,
                     metavar='B', help='training batch size')
 parser.add_argument('--gpu', default='0,1,2,3', type=str,
                       help='gpu device ids for CUDA_VISIBLE_DEVICES')
+parser.add_argument('--epochs', default=301, type=int, help='training epochs')                     
 args = parser.parse_args() 
 
 os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
@@ -79,6 +80,7 @@ writer = SummaryWriter(vis_log_dir)
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 best_acc = 0  # best test accuracy
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
+epochs = args.epochs
 
 # Data Preparation
 print('==> Preparing data..')
@@ -211,7 +213,7 @@ def train(epoch):
     # add log
     writer.add_scalar('loss',  train_loss.avg, epoch)
     
-for epoch in range(start_epoch, start_epoch+301):
+for epoch in range(start_epoch, start_epoch + epochs):
     
     # training 
     train(epoch)
