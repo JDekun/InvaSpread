@@ -98,25 +98,25 @@ transform_test = transforms.Compose([
 
 if dataset =='cifar':
     # cifar-10 dataset 
-    trainset = datasets.CIFAR10Instance(root='./data', train=True, download=True, transform=transform_train)
+    trainset = datasets.CIFAR10Instance(root='../../input', train=True, download=True, transform=transform_train)
     trainloader = torch.utils.data.DataLoader(trainset, 
         batch_size=args.batch_size, shuffle=True, num_workers=4,drop_last =True)
 
-    testset = datasets.CIFAR10Instance(root='./data', train=False, download=True, transform=transform_test)
+    testset = datasets.CIFAR10Instance(root='../../input', train=False, download=True, transform=transform_test)
     testloader = torch.utils.data.DataLoader(testset, 
         batch_size=100, shuffle=False, num_workers=4)
 elif dataset == 'stl':
     # stl-10 dataset 
-    trainset = datasets.STL10Instance(root='./data', split='train+unlabeled', download=True, transform=transform_train)
+    trainset = datasets.STL10Instance(root='../../input', split='train+unlabeled', download=True, transform=transform_train)
     trainloader = torch.utils.data.DataLoader(trainset, 
         batch_size=args.batch_size, shuffle=True, num_workers=4,drop_last =True)
 
-    valset = datasets.STL10Instance(root='./data', split='train', download=True, transform=transform_test)
+    valset = datasets.STL10Instance(root='../../input', split='train', download=True, transform=transform_test)
     valloader = torch.utils.data.DataLoader(valset, 
         batch_size=100, shuffle=False, num_workers=4,drop_last =True)
     
     nvdata = valset.__len__()
-    testset = datasets.STL10Instance(root='./data', split='test', download=True, transform=transform_test)
+    testset = datasets.STL10Instance(root='../../input', split='test', download=True, transform=transform_test)
     testloader = torch.utils.data.DataLoader(testset, 
         batch_size=100, shuffle=False, num_workers=4)
 
@@ -149,9 +149,9 @@ if args.test_only or len(args.resume)>0:
     
 if args.test_only:
     if dataset == 'cifar':
-        acc = kNN(epoch, net, trainloader, testloader, 200, args.batch_t, ndata, low_dim = args.low_dim)
+        acc = kNN(start_epoch, net, trainloader, testloader, 200, args.batch_t, ndata, low_dim = args.low_dim)
     elif dataset == 'stl':
-        acc = kNN(epoch, net, valloader, testloader, 200, args.batch_t, nvdata, low_dim = args.low_dim)
+        acc = kNN(start_epoch, net, valloader, testloader, 200, args.batch_t, nvdata, low_dim = args.low_dim)
     sys.exit(0)
     
 # define optimizer

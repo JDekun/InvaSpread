@@ -20,9 +20,9 @@ def kNN(epoch, net, trainloader, testloader, K, sigma, ndata, low_dim = 128):
         trainLabels = torch.LongTensor([y for (p, y) in trainloader.dataset.imgs]).cuda()
     else:
         try:
-            trainLabels = torch.LongTensor(trainloader.dataset.train_labels).cuda()
+            trainLabels = torch.LongTensor(trainloader.dataset.targets).cuda()
         except:
-            trainLabels = torch.LongTensor(trainloader.dataset.labels).cuda()
+            trainLabels = torch.LongTensor(trainloader.dataset.targets).cuda()
     trainFeatures = np.zeros((low_dim, ndata))    
     C = trainLabels.max() + 1
     C = np.int(C)
@@ -31,11 +31,11 @@ def kNN(epoch, net, trainloader, testloader, K, sigma, ndata, low_dim = 128):
         trainloader.dataset.transform = testloader.dataset.transform
         temploader = torch.utils.data.DataLoader(trainloader.dataset, batch_size=100, shuffle=False, num_workers=4)
         for batch_idx, (inputs, _, targets, indexes) in enumerate(temploader):
-            targets = targets.cuda(async=True)
+            targets = targets.cuda(non_blocking=True)
             batchSize = inputs.size(0)
             features = net(inputs)
             # 
-            trainFeatures[:, batch_idx*batchSize:batch_idx*batchSize+batchSize] = features.data.t()
+            trainFeatures[:, batch_idx*batchSize:batch_idx*batchSize+batchSize] = features.data.cpu().t()
             
     trainloader.dataset.transform = transform_bak
     # 
@@ -48,7 +48,7 @@ def kNN(epoch, net, trainloader, testloader, K, sigma, ndata, low_dim = 128):
         retrieval_one_hot = torch.zeros(K, C).cuda()
         for batch_idx, (inputs, targets, indexes) in enumerate(testloader):
             end = time.time()
-            targets = targets.cuda(async=True)
+            targets = targets.cuda(non_blocking=True)
             batchSize = inputs.size(0)  
             features = net(inputs)
             total += targets.size(0)
