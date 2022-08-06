@@ -22,7 +22,7 @@ def kNN(epoch, net, trainloader, testloader, K, sigma, ndata, low_dim = 128):
         try:
             trainLabels = torch.LongTensor(trainloader.dataset.targets).cuda()
         except:
-            trainLabels = torch.LongTensor(trainloader.dataset.targets).cuda()
+            trainLabels = torch.LongTensor(trainloader.dataset.labels).cuda()
     trainFeatures = np.zeros((low_dim, ndata))    
     C = trainLabels.max() + 1
     C = np.int(C)
